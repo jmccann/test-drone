@@ -1,0 +1,16 @@
+workspace:
+  base: /go
+  path: src/github.com/jmccann/test-drone
+
+pipeline:
+  build:
+    image: golang:1.7
+    commands:
+      - go test
+      - go build
+
+  test_dev:
+    image: golang:1.7
+    commands:
+      - ./test-drone integration-tests
+      - ./test-drone-deployment stress -c 100

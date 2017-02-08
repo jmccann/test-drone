@@ -1,0 +1,18 @@
+pipeline:
+  build:
+    image: alpine:3.4
+    environment:
+      - INTER_VAR=${NOT_CONCEALED}
+    commands:
+      - echo "Hello World"
+      - "echo \"Not Concealed: ${NOT_CONCEALED}\""
+      - "echo \"Concealed: ${IS_CONCEALED}\""
+      - "echo \"Interpolation of Secret ($ {}): $${INTER_VAR}\""
+      - "echo \"Interpolation of Secret ($): $INTER_VAR\""
+      - env | grep INTER
+
+  fakelogs:
+    image: jmccann/genlogs
+    commands:
+      - pip install -r requirements.txt
+      - python apache-fake-log-gen.py -n 1000
