@@ -85,10 +85,11 @@ func loopRebuilds(c *cli.Context, startBuild, numberOfBuilds int) error {
 		for i := 1; i <= numberOfBuilds; i++ {
 			build := startBuild + i
 			fmt.Printf("Restarting build %d\n", build)
-			_, err := http.PostForm(fmt.Sprintf("%s/api/repos/%s/builds/%d?access_token=%s", c.GlobalString("server"), c.GlobalString("repo"), build, c.GlobalString("token")), values)
+			resp, err := http.PostForm(fmt.Sprintf("%s/api/repos/%s/builds/%d?access_token=%s", c.GlobalString("server"), c.GlobalString("repo"), build, c.GlobalString("token")), values)
 			if err != nil {
 				return err
 			}
+			defer resp.Body.Close()
 		}
 
 		err := checkBuilds(c)
@@ -178,6 +179,7 @@ func getWithWebsocket(rawurl string) error {
 	if err != nil {
 		return fmt.Errorf("Failed to connect: %s\n", err)
 	}
+	defer ws.Close()
 
 	var msg = make([]byte, 512)
 	_, err = ws.Read(msg)
