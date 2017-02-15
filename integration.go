@@ -43,21 +43,21 @@ func integrationTests(c *cli.Context) error {
 
 	lastBuild := getLastBuild(buildsJson)
 
-	exist, err := isBranchExist(c, "junk")
+	exist, err := isBranchExist(c, "integration")
 	if err != nil {
 		return err
 	}
 	if exist {
-		err = deleteBranch(c, "junk")
+		err = deleteBranch(c, "integration")
 	}
 	if err != nil {
 		return err
 	}
-	err = createBranch(c, "junk")
+	err = createBranch(c, "integration")
 	if err != nil {
 		return err
 	}
-	err = commit(c, "junk")
+	err = commit(c, "integration")
 	if err != nil {
 		return err
 	}
@@ -84,17 +84,17 @@ func integrationTests(c *cli.Context) error {
 		ExpectStatus(200).
 		ExpectContent("Concealed: **")
 
-	// frisby.Create(fmt.Sprintf("Check secrets are interpolated in %s", c.GlobalString("repo"))).
-	//   Get(fmt.Sprintf("%s/api/repos/%s/logs/%d/1?access_token=%s", c.GlobalString("server"), c.GlobalString("repo"), newBuild, c.GlobalString("token"))).
-	//   Send().
-	//   ExpectStatus(200).
-	//   ExpectContent("Interpolation of Secret ($ {}): MYSUPERSECRETsecret")
+	frisby.Create(fmt.Sprintf("Check secrets are interpolated in %s", c.GlobalString("repo"))).
+	  Get(fmt.Sprintf("%s/api/repos/%s/logs/%d/1?access_token=%s", c.GlobalString("server"), c.GlobalString("repo"), newBuild, c.GlobalString("token"))).
+	  Send().
+	  ExpectStatus(200).
+	  ExpectContent("Interpolation of Secret ($ {}): MYSUPERSECRETsecret")
 
-	// frisby.Create(fmt.Sprintf("Check secrets are interpolated in %s", c.GlobalString("repo"))).
-	//   Get(fmt.Sprintf("%s/api/repos/%s/logs/%d/1?access_token=%s", c.GlobalString("server"), c.GlobalString("repo"), newBuild, c.GlobalString("token"))).
-	//   Send().
-	//   ExpectStatus(200).
-	//   ExpectContent("Interpolation of Secret ($): MYSUPERSECRETsecret")
+	frisby.Create(fmt.Sprintf("Check secrets are interpolated in %s", c.GlobalString("repo"))).
+	  Get(fmt.Sprintf("%s/api/repos/%s/logs/%d/1?access_token=%s", c.GlobalString("server"), c.GlobalString("repo"), newBuild, c.GlobalString("token"))).
+	  Send().
+	  ExpectStatus(200).
+	  ExpectContent("Interpolation of Secret ($): MYSUPERSECRETsecret")
 
 	frisby.Create(fmt.Sprintf("Can restart last job in %s", c.GlobalString("repo"))).
 		Post(fmt.Sprintf("%s/api/repos/%s/builds/%d?access_token=%s", c.GlobalString("server"), c.GlobalString("repo"), lastBuild, c.GlobalString("token"))).

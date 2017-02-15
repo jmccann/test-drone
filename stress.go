@@ -31,17 +31,17 @@ func stressTests(c *cli.Context) error {
 
 		// Create Branch
 		fmt.Printf("Resetting branch\n")
-		exist, err := isBranchExist(c, "junk")
+		exist, err := isBranchExist(c, "stress")
 		if err != nil {
 			return err
 		}
 		if exist {
-			err = deleteBranch(c, "junk")
+			err = deleteBranch(c, "stress")
 		}
 		if err != nil {
 			return err
 		}
-		err = createBranch(c, "junk")
+		err = createBranch(c, "stress")
 		if err != nil {
 			return err
 		}
@@ -58,7 +58,7 @@ func stressTests(c *cli.Context) error {
 		fmt.Printf("Creating %d commits\n", c.Int("commits"))
 		for i := 1; i <= c.Int("commits"); i++ {
 			fmt.Printf("[%d/%d] Creating Commit\n", i, c.Int("commits"))
-			err = commit(c, "junk")
+			err = commit(c, "stress")
 			if err != nil {
 				return err
 			}
