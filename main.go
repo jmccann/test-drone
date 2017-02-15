@@ -208,9 +208,9 @@ func createBranch(c *cli.Context, branch string) error {
 
 	lastCommitSHA := lastCommit.SHA
 
-	junkBranchRef := fmt.Sprintf("refs/heads/%s", branch)
+	branchRef := fmt.Sprintf("refs/heads/%s", branch)
 	ref := &github.Reference{
-		Ref: &junkBranchRef,
+		Ref: &branchRef,
 		Object: &github.GitObject{
 			SHA: lastCommitSHA,
 		},
@@ -293,9 +293,9 @@ func commit(c *cli.Context, branch string) error {
 	}
 	newCommitSHA := newCommit.SHA
 
-	junkBranchRef := fmt.Sprintf("refs/heads/%s", branch)
+	branchRef := fmt.Sprintf("refs/heads/%s", branch)
 	ref := &github.Reference{
-		Ref: &junkBranchRef,
+		Ref: &branchRef,
 		Object: &github.GitObject{
 			SHA: newCommitSHA,
 		},
